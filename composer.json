@@ -1,0 +1,38 @@
+{
+    "name": "symfony-cmf/description",
+    "description": "Allow third-party libraries to add descriptions to an object instance",
+    "homepage": "http://cmf.symfony.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Symfony CMF Community",
+            "homepage": "https://github.com/symfony-cmf/symfony-cmf/contributors"
+        }
+    ],
+    "prefer-stable": true,
+    "minimum-stability": "dev",
+    "require": {
+        "php": "^7.0",
+        "psiphp/description": "~1.0",
+        "doctrine/phpcr-odm": "^1.4|^2.0"
+    },
+    "require-dev": {
+        "jackalope/jackalope-fs": "dev-master",
+        "phpunit/phpunit": "^5.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Psi\\Component\\Description\\Enhancer\\Doctrine\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Psi\\Component\\Description\\Enhancer\\Doctrine\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
