@@ -23,15 +23,15 @@ class EnhancerTest extends \PHPUnit_Framework_TestCase
 
         $extensions = [
             new StandardExtension(),
-            new HierarchyExtension()
+            new HierarchyExtension(),
         ];
         $schema = new Schema($extensions);
-        $this->factory = new DescriptionFactory([ $enhancer ], $schema);
+        $this->factory = new DescriptionFactory([$enhancer], $schema);
         $this->parentMetadata = $this->prophesize(ClassMetadata::class);
-        $this->childOneMetadata= $this->prophesize(ClassMetadata::class);
-        $this->subChildOneMetadata= $this->prophesize(ClassMetadata::class);
-        $this->childTwoMetadata= $this->prophesize(ClassMetadata::class);
-        $this->outsideMetadata= $this->prophesize(ClassMetadata::class);
+        $this->childOneMetadata = $this->prophesize(ClassMetadata::class);
+        $this->subChildOneMetadata = $this->prophesize(ClassMetadata::class);
+        $this->childTwoMetadata = $this->prophesize(ClassMetadata::class);
+        $this->outsideMetadata = $this->prophesize(ClassMetadata::class);
 
         $this->parentMetadata->getReflectionClass()->willReturn(new \ReflectionClass(ParentClass::class));
         $this->childOneMetadata->getReflectionClass()->willReturn(new \ReflectionClass(ChildClassOne::class));
@@ -50,7 +50,7 @@ class EnhancerTest extends \PHPUnit_Framework_TestCase
             $this->childOneMetadata->reveal(),
             $this->childTwoMetadata->reveal(),
             $this->subChildOneMetadata->reveal(),
-            $this->outsideMetadata->reveal()
+            $this->outsideMetadata->reveal(),
         ]);
 
         $this->parentMetadata->getChildClasses()->willReturn([

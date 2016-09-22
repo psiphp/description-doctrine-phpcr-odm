@@ -4,7 +4,6 @@ namespace Psi\Component\Description\Enhancer\Doctrine;
 
 use Doctrine\ODM\PHPCR\Mapping\ClassMetadataFactory;
 use Doctrine\Common\Util\ClassUtils;
-
 use Psi\Component\Description\EnhancerInterface;
 use Psi\Component\Description\DescriptionInterface;
 use Psi\Component\Description\Subject;
