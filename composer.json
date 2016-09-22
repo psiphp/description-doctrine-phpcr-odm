@@ -1,5 +1,5 @@
 {
-    "name": "symfony-cmf/description",
+    "name": "psiphp/description-doctrine-phpcr-odm",
     "description": "Allow third-party libraries to add descriptions to an object instance",
     "homepage": "http://cmf.symfony.com",
     "license": "MIT",
