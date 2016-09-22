@@ -39,9 +39,9 @@ class PhpcrOdmEnhancer implements EnhancerInterface
             }
         }
 
-        $description->set(new BooleanDescriptor('hierarchy.allow_children', !$metadata->isLeaf()));
-        $description->set(new ArrayDescriptor('hierarchy.children_types', $childTypes));
-        $description->set(new ClassDescriptor('std.class', new \ReflectionClass(ClassUtils::getRealClass($class->getName()))));
+        $description->set('hierarchy.allow_children', new BooleanDescriptor(!$metadata->isLeaf()));
+        $description->set('hierarchy.children_types', new ArrayDescriptor($childTypes));
+        $description->set('std.class', new ClassDescriptor(new \ReflectionClass(ClassUtils::getRealClass($class->getName()))));
     }
 
     /**
