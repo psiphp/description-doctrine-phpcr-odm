@@ -10,14 +10,15 @@ use Psi\Component\Description\Subject;
 use Psi\Component\Description\Descriptor\BooleanDescriptor;
 use Psi\Component\Description\Descriptor\ArrayDescriptor;
 use Psi\Component\Description\Descriptor\ClassDescriptor;
+use Doctrine\ODM\PHPCR\DocumentManagerInterface;
 
 class PhpcrOdmEnhancer implements EnhancerInterface
 {
-    private $metadataFactory;
+    private $documentManager;
 
-    public function __construct(ClassMetadataFactory $metadataFactory)
+    public function __construct(DocumentManagerInterface $documentManager)
     {
-        $this->metadataFactory = $metadataFactory;
+        $this->documentManager = $documentManager;
     }
 
     /**
@@ -25,12 +26,13 @@ class PhpcrOdmEnhancer implements EnhancerInterface
      */
     public function enhanceFromClass(DescriptionInterface $description, \ReflectionClass $class)
     {
-        $metadata = $this->metadataFactory->getMetadataFor(ClassUtils::getRealClass($class->getName()));
+        $metadataFactory = $this->documentManager->getMetadataFactory();
+        $metadata = $metadataFactory->getMetadataFor(ClassUtils::getRealClass($class->getName()));
         $childClasses = $metadata->getChildClasses();
         $childTypes = [];
 
         // explode the allowed types into concrete classes
-        foreach ($this->metadataFactory->getAllMetadata() as $childMetadata) {
+        foreach ($metadataFactory->getAllMetadata() as $childMetadata) {
             foreach ($childClasses as $childClass) {
                 $childRefl = $childMetadata->getReflectionClass();
                 if ($childClass == $childRefl->getName() || $childRefl->isSubclassOf($childClass)) {
@@ -56,6 +58,6 @@ class PhpcrOdmEnhancer implements EnhancerInterface
      */
     public function supports(Subject $subject)
     {
-        return $this->metadataFactory->hasMetadataFor(ClassUtils::getRealClass($subject->getClass()->getName()));
+        return $this->documentManager->getMetadataFactory()->hasMetadataFor(ClassUtils::getRealClass($subject->getClass()->getName()));
     }
 }

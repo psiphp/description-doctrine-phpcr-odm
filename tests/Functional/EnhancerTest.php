@@ -10,6 +10,7 @@ use Psi\Component\Description\DescriptionFactory;
 use Psi\Component\Description\Enhancer\Doctrine\PhpcrOdmEnhancer;
 use Psi\Component\Description\Subject;
 use Doctrine\ODM\PHPCR\Mapping\ClassMetadata;
+use Doctrine\ODM\PHPCR\DocumentManagerInterface;
 
 class EnhancerTest extends \PHPUnit_Framework_TestCase
 {
@@ -19,7 +20,9 @@ class EnhancerTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->metadataFactory = $this->prophesize(ClassMetadataFactory::class);
-        $enhancer = new PhpcrOdmEnhancer($this->metadataFactory->reveal());
+        $documentManager = $this->prophesize(DocumentManagerInterface::class);
+        $documentManager->getMetadataFactory()->willReturn($this->metadataFactory->reveal());
+        $enhancer = new PhpcrOdmEnhancer($documentManager->reveal());
 
         $extensions = [
             new StandardExtension(),
