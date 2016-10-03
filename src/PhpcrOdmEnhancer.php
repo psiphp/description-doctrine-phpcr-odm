@@ -30,8 +30,13 @@ class PhpcrOdmEnhancer implements EnhancerInterface
         $metadataFactory = $this->documentManager->getMetadataFactory();
         $metadata = $metadataFactory->getMetadataFor(ClassUtils::getRealClass($class->getName()));
         $childClasses = $metadata->getChildClasses();
-        $childTypes = [];
 
+        // cast child classes to strings because of https://github.com/doctrine/phpcr-odm/issues/723
+        $childClasses = array_map(function ($value) {
+            return (string) $value;
+        }, $childClasses);
+
+        $childTypes = [];
         // explode the allowed types into concrete classes
         foreach ($metadataFactory->getAllMetadata() as $childMetadata) {
             foreach ($childClasses as $childClass) {
