@@ -11,18 +11,20 @@ use Psi\Component\Description\Enhancer\Doctrine\PhpcrOdmEnhancer;
 use Psi\Component\Description\Subject;
 use Doctrine\ODM\PHPCR\Mapping\ClassMetadata;
 use Doctrine\ODM\PHPCR\DocumentManagerInterface;
+use PHPCR\NodeInterface;
 
 class EnhancerTest extends \PHPUnit_Framework_TestCase
 {
     private $metadataFactory;
     private $factory;
+    private $documentManager;
 
     public function setUp()
     {
         $this->metadataFactory = $this->prophesize(ClassMetadataFactory::class);
-        $documentManager = $this->prophesize(DocumentManagerInterface::class);
-        $documentManager->getMetadataFactory()->willReturn($this->metadataFactory->reveal());
-        $enhancer = new PhpcrOdmEnhancer($documentManager->reveal());
+        $this->documentManager = $this->prophesize(DocumentManagerInterface::class);
+        $this->documentManager->getMetadataFactory()->willReturn($this->metadataFactory->reveal());
+        $enhancer = new PhpcrOdmEnhancer($this->documentManager->reveal());
 
         $extensions = [
             new StandardExtension(),
@@ -41,12 +43,17 @@ class EnhancerTest extends \PHPUnit_Framework_TestCase
         $this->subChildOneMetadata->getReflectionClass()->willReturn(new \ReflectionClass(SubChildOne::class));
         $this->childTwoMetadata->getReflectionClass()->willReturn(new \ReflectionClass(ChildClassTwo::class));
         $this->outsideMetadata->getReflectionClass()->willReturn(new \ReflectionClass(OutsideClass::class));
+        $this->node = $this->prophesize(NodeInterface::class);
     }
 
     public function testEnhancer()
     {
+        $object = new ParentClass;
+
         $this->metadataFactory->getMetadataFor(ParentClass::class)->willReturn($this->parentMetadata->reveal());
         $this->metadataFactory->hasMetadataFor(ParentClass::class)->willReturn(true);
+        $this->documentManager->getNodeForDocument($object)->willReturn($this->node->reveal());
+        $this->node->getIdentifier()->willReturn('x-y-z');
 
         $this->metadataFactory->getAllMetadata()->willReturn([
             $this->parentMetadata->reveal(),
@@ -63,7 +70,7 @@ class EnhancerTest extends \PHPUnit_Framework_TestCase
 
         $this->parentMetadata->isLeaf()->willReturn(false);
 
-        $description = $this->factory->describe(Subject::createFromObject(ParentClass::class));
+        $description = $this->factory->describe(Subject::createFromObject($object));
 
         $this->assertTrue($description->get('hierarchy.allow_children')->getValue());
         $this->assertCount(3, $description->get('hierarchy.children_types')->getValues());
@@ -71,6 +78,7 @@ class EnhancerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(ChildClassTwo::class, $description->get('hierarchy.children_types')->getValues()[1]);
         $this->assertEquals(SubChildOne::class, $description->get('hierarchy.children_types')->getValues()[2]);
         $this->assertEquals(ParentClass::class, $description->get('std.class')->getClass()->getName());
+        $this->assertEquals('x-y-z', $description->get('std.identifier')->getValue());
     }
 }
 

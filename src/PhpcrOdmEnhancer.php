@@ -11,6 +11,7 @@ use Psi\Component\Description\Descriptor\BooleanDescriptor;
 use Psi\Component\Description\Descriptor\ArrayDescriptor;
 use Psi\Component\Description\Descriptor\ClassDescriptor;
 use Doctrine\ODM\PHPCR\DocumentManagerInterface;
+use Psi\Component\Description\Descriptor\StringDescriptor;
 
 class PhpcrOdmEnhancer implements EnhancerInterface
 {
@@ -51,6 +52,8 @@ class PhpcrOdmEnhancer implements EnhancerInterface
      */
     public function enhanceFromObject(DescriptionInterface $description, Subject $subject)
     {
+        $node = $this->documentManager->getNodeForDocument($subject->getObject());
+        $description->set('std.identifier', new StringDescriptor($node->getIdentifier()));
     }
 
     /**
