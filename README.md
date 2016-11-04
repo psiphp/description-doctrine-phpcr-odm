@@ -1,5 +1,6 @@
 # Psi Description enhancer for PHPCR-ODM
 
+[![experimental](http://badges.github.io/stability-badges/dist/experimental.svg)](http://github.com/badges/stability-badges)
 [![Build Status](https://travis-ci.org/psiphp/description-doctrine-phpcr-odm.svg?branch=master)](https://travis-ci.org/psiphp/description-doctrine-phpcr-odm)
 [![StyleCI](https://styleci.io/repos/67831603/shield)](https://styleci.io/repos/67831603)
 [![Scrutinizer Code
