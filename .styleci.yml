@@ -1,1 +1,8 @@
-preset: symfony
+enabled:
+  - declare_strict_types
+
+disabled:
+  - align_double_arrow
+  - concat_without_spaces
+  - phpdoc_indent
+  - phpdoc_params
