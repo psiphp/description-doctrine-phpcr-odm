@@ -12,9 +12,10 @@ Doctrine PHPCR-ODM Description Enhancer.
 
 Adds descriptors for the real class FQN, valid children types, etc.
 
+
 ## Documentation
 
-See the documentation in [doc/index.rst](https://github.com/psiphp/description-doctrine-phpcr-odm/blob/master/docs/index.rst).
+Documentation is in progress, there may be documentation in [doc/index.rst](https://github.com/psiphp/description-doctrine-phpcr-odm/blob/master/docs/index.rst).
 
 ## Installation
 
